@@ -15,6 +15,7 @@ function App() {
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     let x = useRef();
+    const [limitError, setLimitError] = useState(false);
 
     const fetchData = async (newPage) => {
         var options = {
@@ -32,10 +33,10 @@ function App() {
             },
         };
         try {
-            setLoading(true);
             const { data } = await axios.request(options);
             console.log(data);
             setData(data.data);
+            setPageData(data.data.slice(0, perPageItems));
             setPage(data.metadata.currentOffset + 1);
             setTotalCount(data.metadata.totalCount);
         } catch (err) {
@@ -46,6 +47,10 @@ function App() {
     };
 
     const handleSearch = (query) => {
+        if (limitError) {
+            return;
+        }
+        setLoading(true);
         setSearch(query);
         setPage(1);
 
@@ -62,37 +67,60 @@ function App() {
     };
 
     const handleLimit = (limit) => {
-        console.log(limit);
+        if (limit > 10) {
+            setLimitError(true);
+        } else {
+            setLimitError(false);
+        }
         setLimit(limit);
     };
-
+    const handleDefaultView = (limit) => {
+        console.log(limit);
+        setPerPageItems(limit);
+        setPageData(data.slice(0, limit));
+    };
     return (
         <>
             <SearchBox handleSearch={handleSearch}></SearchBox>
-            {loading ? (
-                <Loader />
-            ) : (
-                <>
-                    <p>Table</p>
-                    <Table pageData={data}></Table>
-                </>
-            )}
-            {data.length && (
+
+            <Table
+                search={search}
+                pageData={pageData}
+                loading={loading}
+            ></Table>
+
+            {data.length > 0 ? (
                 <Pagination
                     currentPage={page}
-                    itemsPerPage={perPageItems}
+                    itemsPerPage={limit}
                     totalCount={totalCount}
                     onPageChange={handlePageChange}
                 ></Pagination>
+            ) : (
+                <></>
             )}
-            <label htmlFor="limit"></label>
-            <input
-                type="number"
-                name="limit"
-                id="limit"
-                value={limit}
-                onChange={({ target }) => handleLimit(+target.value)}
-            />
+            <div className="flex col gap-10">
+                <label htmlFor="limit">Limit To Fetch Items From Server</label>
+                <input
+                    type="number"
+                    name="limit"
+                    id="limit"
+                    value={limit}
+                    className={limitError ? "error" : ""}
+                    onChange={({ target }) => handleLimit(+target.value)}
+                />
+                <div className={"error " + (limitError ? "show" : "hide")}>
+                    please put limit up to 10
+                </div>
+                <label htmlFor="itemsOnPage">Defalult Items On Page</label>
+                <input
+                    type="number"
+                    name="itemsOnPage"
+                    id="itemsOnPage"
+                    value={perPageItems}
+                    onChange={({ target }) => handleDefaultView(+target.value)}
+                />
+            </div>
         </>
     );
 }

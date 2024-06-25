@@ -1,11 +1,13 @@
 * {
-    font-family: "system-ui, -apple-system, " Segoe UI ", Roboto, " Helvetica
-        Neue ", Arial, " Noto Sans ", " Liberation Sans ", sans-serif, " Apple
-        Color Emoji ", " Segoe UI Emoji ", " Segoe UI Symbol ", " Noto Color
-        Emoji;
+    font-size: 16px;
+    color: rgb(33, 37, 41);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+        Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 .search-box {
     margin: 15px;
+    position: relative;
 }
 .search-input {
     width: 241px;
@@ -16,6 +18,7 @@
     padding: 6px 12px 6px 12px;
     border-radius: 4px;
     color: rgb(33, 37, 41);
+    position: relative;
 }
 .search-input:focus-visible {
     outline: none;
@@ -66,4 +69,75 @@ p {
 .btn:disabled {
     background-color: rgb(233, 236, 239);
     color: black;
+}
+
+.keyboard-shortcut {
+    font-size: 12px;
+    border-color: rgb(222, 226, 230);
+    border-radius: 2px;
+    height: 24px;
+    align-items: center;
+    padding-left: 4px;
+    padding-right: 4px;
+    position: absolute;
+    box-shadow: 0 0 0 1px rgb(121 82 179 / 25%);
+    z-index: 100;
+    top: 14px;
+    left: 214px;
+    display: flex;
+}
+.text-center {
+    text-align: center;
+}
+
+.spinner {
+    width: 25px; /* The spinner will take 50% of the parent width */
+    height: 25px; /* The spinner will take 50% of the parent height */
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 2s linear infinite; /* Absolute positioning to center within parent */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the spinner */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.relative {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+    max-width: 15%;
+}
+.col {
+    flex-direction: column;
+}
+.gap-10 {
+    gap: 10px;
+}
+.error {
+    color: red;
+}
+.error:focus-visible {
+    outline: 1px solid red;
+    border: none;
+}
+.show {
+    display: block;
+}
+.hide {
+    display: none;
 }

@@ -1,5 +1,9 @@
 const Loader = () => {
-    return <div>Loader</div>;
+    return (
+        <div className="relative">
+            <div className="spinner"></div>
+        </div>
+    );
 };
 
 export default Loader;
